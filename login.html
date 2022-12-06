@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link type="text/css" rel="stylesheet" href="loginstyle.css">
+</head>
+<body>
+<div id="wrap">
+    <form method="post">
+        <table>
+            <tr>
+                <td>账号：</td>
+                <td>
+                    <label>
+                        <input type="text" id="username">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>密码：</td>
+                <td>
+                    <label>
+                        <input type="password" id="psw">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="button" onclick="login()" class="btn" value="确认">
+                    <input type="button" onclick="reset()" class="btn" value="清空">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+    <script src="db.js"></script>
+    <script type="text/javascript">
+        function login(){
+            var flag = false;
+            var username = $('username').value;
+            var psw = $('psw').value;
+            if(select(username,psw) === true){
+                flag=true;
+            }
+            if(flag){
+                var name = JSON.parse(localStorage.getItem(Object.keys(localStorage).length))["name"];
+                location.assign(encodeURI("./index.html?user="+name));
+            }else {
+                document.getElementById('psw').value="";
+                alert("账号或密码错误，请重试");
+            }
+        }
+        function reset(){
+            document.getElementById('username').value="";
+            document.getElementById('psw').value="";
+        }
+    </script>
+</body>
+</html>
