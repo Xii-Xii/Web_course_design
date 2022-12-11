@@ -7,11 +7,11 @@ function $(id) {
     return document.getElementById(id);
 }
 
-function pause() {
+pause = function () {
     clearInterval(main_timer);
 }
 
-function restart() {
+restart = function () {
     switchPic();
     init_main_slide();
 }
