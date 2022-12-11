@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link href="registerstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div id="wrap">
+    <form method="post">
+        <table>
+            <tr>
+                <td>昵称：</td>
+                <td>
+                    <label>
+                        <input id="usernameRE" placeholder="只能包含数字字母_!@" type="text">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>密码：</td>
+                <td>
+                    <label>
+                        <input id="pswRE" placeholder="由长度至少6位的数字字母_!@构成" type="password">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>再次确认密码：</td>
+                <td>
+                    <label>
+                        <input id="pswRE2" placeholder="两次密码输入必须一致" type="password">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    性别
+                </td>
+                <td>
+                    <label>男<input class="sex" name="sex" type="radio" value="男"></label>
+                    <label>女<input class="sex" name="sex" type="radio" value="女"></label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input class="btn" onclick="register()" type="button" value="确认">
+                    <input class="btn" type="reset" value="清空">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script src="db.js"></script>
+<script type="text/javascript">
+    function $(id) {
+        return document.getElementById(id);
+    }
+
+    function register() {
+        var flag = 0;
+        var str = "";
+        if (/^[a-zA-Z0-9_!@]+$/.test($('usernameRE').value) === false) {
+            flag++;
+            str += "账号只能包含数字字母_!@\n"
+        }
+        if (((/^[a-zA-Z0-9_!@]+$/.test($('pswRE').value) === true) && ($('pswRE').value.length >= 6)) !== true) {
+            flag++;
+            str += "密码要由长度至少6位的数字字母以及特殊符号_!@构成\n";
+        }
+        if (flag !== false && $('pswRE2').value !== $('pswRE').value) {
+            flag++;
+            str += "两次输入的密码不一致\n";
+        }
+        var m = document.getElementsByName('sex')[0];
+        var f = document.getElementsByName('sex')[1];
+        if ((m.checked || m.checked) === false) {
+            flag++;
+            str += "请选择性别\n";
+        }
+        if (flag > 0) {
+            str += "请重新检查你的输入";
+            alert(str);
+        } else {
+            var username = findUsername();
+            var sex = m.checked ? m.value : f.value;
+            alert("注册成功,你的账号为：" + username + "\n请务必牢记");
+            insert($('usernameRE').value, $('pswRE').value, sex);
+            var name = JSON.parse(localStorage.getItem(Object.keys(localStorage).length))["name"];
+            location.assign(encodeURI("./index.html?user=" + name));
+        }
+    }
+</script>
+</body>
+</html>
